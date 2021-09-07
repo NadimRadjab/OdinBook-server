@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const postRoutes = require("./routes/api/posts");
+const commentRoutes = require("./routes/api/comments");
 
 const db = "mongodb://localhost:27017/odinbook";
 
@@ -18,7 +19,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// app.use("/post", );
 app.use("/posts", postRoutes);
+app.use("/posts", commentRoutes);
 
 const port = process.env.PORT || 5000;
 
