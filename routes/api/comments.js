@@ -3,14 +3,6 @@ const router = express.Router();
 const Comment = require("../../models/comments");
 const Post = require("../../models/posts");
 
-// router.get("/:id", async (req, res) => {
-//   const comment = await Comment.find({});
-//   if (!comment) {
-//     res.status(400).json({ msg: "Comment does not exist!" });
-//   } else {
-//     res.json(comment);
-//   }
-// });
 router.post("/:id/comments", async (req, res) => {
   const { text } = req.body;
   const { id } = req.params;
@@ -29,6 +21,7 @@ router.post("/:id/comments", async (req, res) => {
 router.post("/:id/comments/:commentId", async (req, res) => {
   try {
     const { id, commentId } = req.params;
+    if (!id) res.json({ msg: "Post does not exist!" });
     const post = await Post.findByIdAndUpdate(id, {
       $elemMatch: {
         commentId: { text: { ...req.body } },

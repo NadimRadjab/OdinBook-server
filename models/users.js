@@ -40,7 +40,10 @@ const UserSchema = new Schema({
       ref: "Comment",
     },
   ],
-
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   date: {
     type: Date,
     default: Date.now,
