@@ -1,0 +1,26 @@
+{
+  "name": "odinbookserver",
+  "version": "1.0.0",
+  "description": "back-end",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Nadim Radjab",
+  "license": "ISC",
+  "dependencies": {
+    "@shelf/jest-mongodb": "^2.0.3",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "jest": "^27.1.0",
+    "mongoose": "^6.0.5",
+    "supertest": "^6.1.6"
+  },
+  "jest": {
+    "verbose": true,
+    "preset": "@shelf/jest-mongodb"
+  }
+}
