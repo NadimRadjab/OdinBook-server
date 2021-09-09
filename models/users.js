@@ -44,6 +44,12 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  friendList: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,
@@ -60,4 +66,5 @@ UserSchema.pre("save", function (next) {
     });
   });
 });
+
 module.exports = mongoose.model("User", UserSchema);

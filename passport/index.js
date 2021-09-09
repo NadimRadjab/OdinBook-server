@@ -1,5 +1,9 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const passportJWT = require("passport-jwt");
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
+
 const User = require("../models/users");
 const bycrypt = require("bcryptjs");
 
@@ -28,6 +32,26 @@ passport.use(
           });
         }
       });
+    });
+  })
+);
+
+const opts = {
+  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  secretOrKey: "secret",
+};
+
+passport.use(
+  new JWTStrategy(opts, function (jwt_payload, done) {
+    User.findById(jwt_payload.user._id, (err, user) => {
+      if (err) {
+        return done(err, false);
+      }
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
     });
   })
 );

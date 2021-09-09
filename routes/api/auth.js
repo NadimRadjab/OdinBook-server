@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
   });
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", (req, res) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({

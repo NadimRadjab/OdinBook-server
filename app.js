@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const postRoutes = require("./routes/api/posts");
 const commentRoutes = require("./routes/api/comments");
 const authRoutes = require("./routes/api/auth");
+const userRoutes = require("./routes/api/user");
 
 const db = "mongodb://localhost:27017/odinbook";
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/posts", postRoutes);
 app.use("/posts", commentRoutes);
 app.use("/user", authRoutes);
+app.use("/user", userRoutes);
 
 const port = process.env.PORT || 5000;
 
