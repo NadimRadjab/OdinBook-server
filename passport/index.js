@@ -11,8 +11,8 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email", passwordField: "password" },
     function (email, password, done) {
-      User.findOne({ email }, (err, user) => {
-        console.log(user);
+      User.findOne({ email }, async (err, user) => {
+        console.log(await user.populate("comments"));
         if (err) {
           return done(err);
         }
@@ -22,11 +22,8 @@ passport.use(
           });
         }
         bycrypt.compare(password, user.password, (err, res) => {
-          console.log(password, user.password);
-          console.log(res);
           if (err) throw err;
           if (res) {
-            console.log(res);
             return done(null, user, { message: "Logged In Successfully!" });
           } else {
             return done(null, false, {

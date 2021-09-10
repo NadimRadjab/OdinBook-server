@@ -17,7 +17,6 @@ router.get("/:id/friends", async (req, res) => {
   const user = await User.findById(id);
   const friends = await user.populate("friendList");
   const test = user.friendList.map((f) => f);
-  console.log(friend);
 });
 
 router.post("/:id/friends/:friendId", async (req, res) => {

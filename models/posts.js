@@ -37,5 +37,14 @@ PostSchema.post("findOneAndDelete", async function (doc) {
     });
   }
 });
+PostSchema.post("findOneAndUpdate", async function (doc) {
+  if (doc) {
+    await User.findByIdAndUpdate(doc.author.toString(), {
+      $elemMatch: {
+        id: { text: doc.text },
+      },
+    });
+  }
+});
 
 module.exports = mongoose.model("Post", PostSchema);
