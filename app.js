@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const passport = require("./passport");
 const postRoutes = require("./routes/api/posts");
 const commentRoutes = require("./routes/api/comments");
 const authRoutes = require("./routes/api/auth");

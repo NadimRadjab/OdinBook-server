@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Comment = require("./comments");
+const User = require("./users");
 
 const PostSchema = new Schema({
   text: {
@@ -27,6 +28,11 @@ PostSchema.post("findOneAndDelete", async function (doc) {
     await Comment.deleteMany({
       _id: {
         $in: doc.comments,
+      },
+    });
+    await User.findByIdAndUpdate(doc.author.toString(), {
+      $pull: {
+        posts: doc._id.toString(),
       },
     });
   }

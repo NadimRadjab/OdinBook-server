@@ -2,14 +2,14 @@ const Post = require("../models/posts");
 const Comment = require("../models/comments");
 
 module.exports.isAuthor = async (req, res, next) => {
-  const { id, commentId } = req.params;
-  const post = await Post.findById(id);
-  const comment = await Comment.findById(commentId);
-  if (!post.author.equals(req.use._id)) {
-    res.status(403).json({ success: false });
+  try {
+    const { id, commentId } = req.params;
+    const post = await Post.findById(id);
+    if (!post.author.equals(req.user._id) && !req.user.isAdmin) {
+      res.status(403).json({ success: false });
+    }
+    next();
+  } catch (e) {
+    console.log(e);
   }
-  if (!comment.author.equals(req.use._id)) {
-    res.status(403).json({ success: false });
-  }
-  next();
 };
