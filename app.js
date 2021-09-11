@@ -5,7 +5,6 @@ const postRoutes = require("./routes/api/posts");
 const commentRoutes = require("./routes/api/comments");
 const authRoutes = require("./routes/api/auth");
 const usersRoutes = require("./routes/api/users");
-const userRoutes = require("./routes/api/user");
 const friendsRoutes = require("./routes/api/friends");
 
 const db = "mongodb://localhost:27017/odinbook";
@@ -23,10 +22,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use("/friends", friendsRoutes);
 app.use("/", usersRoutes);
 app.use("/posts", postRoutes, commentRoutes);
 app.use("/user", authRoutes);
-app.use("/friends", friendsRoutes);
 
 const port = process.env.PORT || 5000;
 

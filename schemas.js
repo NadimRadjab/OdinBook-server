@@ -10,3 +10,12 @@ module.exports.userSchema = Joi.object({
   posts: Joi.array(),
   comments: Joi.array(),
 });
+module.exports.postSchema = Joi.object({
+  text: Joi.string().required(),
+  author: Joi.object(),
+  comments: Joi.array(),
+});
+module.exports.commentSchema = Joi.object({
+  text: Joi.string().required(),
+  author: Joi.object(),
+});

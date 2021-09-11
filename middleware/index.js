@@ -1,7 +1,7 @@
 const Post = require("../models/posts");
 const Comment = require("../models/comments");
 const User = require("../models/users");
-const { userSchema } = require("../schemas");
+const { userSchema, postSchema, commentSchema } = require("../schemas");
 
 module.exports.isPostAuthor = async (req, res, next) => {
   try {
@@ -49,7 +49,24 @@ module.exports.validateUser = (req, res, next) => {
   const { error } = userSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
-
+    res.status(400).json({ message: msg });
+  } else {
+    next();
+  }
+};
+module.exports.validatePost = (req, res, next) => {
+  const { error } = postSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    res.status(400).json({ message: msg });
+  } else {
+    next();
+  }
+};
+module.exports.validateComment = (req, res, next) => {
+  const { error } = commentSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
     res.status(400).json({ message: msg });
   } else {
     next();
