@@ -12,7 +12,6 @@ passport.use(
     { usernameField: "email", passwordField: "password" },
     function (email, password, done) {
       User.findOne({ email }, async (err, user) => {
-        console.log(await user.populate("comments"));
         if (err) {
           return done(err);
         }

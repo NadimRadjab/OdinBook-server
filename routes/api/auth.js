@@ -4,14 +4,11 @@ const User = require("../../models/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const { validateUser } = require("../../middleware");
 
-router.post("/register", async (req, res) => {
-  const { firstName, lastName, gender, email, password } = req.body;
-
-  if (!firstName || !email || !password) {
-    res.status(400).json({ message: "Please enter all fields" });
-  }
+router.post("/register", validateUser, async (req, res, next) => {
   const user = new User(req.body);
+  if (req.body.email) res.status(400).json({ message: "User already exists!" });
   bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
     bcrypt.hash(user.password, salt, async (err, hash) => {

@@ -3,25 +3,13 @@ const router = express.Router();
 const Post = require("../../models/posts");
 const User = require("../../models/users");
 const passport = require("passport");
+const catchAsync = require("../../utils/catchAsync");
 const { isPostAuthor } = require("../../middleware");
 
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const post = await Post.find({}).populate("comments");
-    if (!post) {
-      res.status(400).json({ msg: "Post does not exist!" });
-    } else {
-      res.json(post);
-    }
-  }
-);
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-
-  async (req, res) => {
+  catchAsync(async (req, res) => {
     const { text } = req.body;
     try {
       const post = new Post({ text });
@@ -34,13 +22,13 @@ router.post(
     } catch (e) {
       console.log(e);
     }
-  }
+  })
 );
 router.post(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   isPostAuthor,
-  async (req, res) => {
+  catchAsync(async (req, res) => {
     try {
       const { id } = req.params;
       const post = await Post.findByIdAndUpdate(id, { ...req.body });
@@ -50,13 +38,14 @@ router.post(
       console.log(e);
       res.status(400).json({ succsess: false });
     }
-  }
+  })
 );
+
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   isPostAuthor,
-  async (req, res) => {
+  catchAsync(async (req, res) => {
     try {
       const { id } = req.params;
       const post = await Post.findByIdAndDelete(id);
@@ -64,6 +53,6 @@ router.delete(
     } catch (e) {
       res.status(400).json({ succsess: false });
     }
-  }
+  })
 );
 module.exports = router;
