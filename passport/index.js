@@ -30,14 +30,14 @@ passport.use(
             });
           }
         });
-      });
+      }).select("-friendList");
     }
   )
 );
 
 const opts = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "secret",
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 passport.use(

@@ -5,8 +5,9 @@ const passport = require("passport");
 
 module.exports.registerUser = async (req, res, next) => {
   let isUser = await User.findOne({ email: req.body.email });
+
   if (isUser) {
-    res.status(400).json({ errors: [{ msg: "User already exists" }] });
+    res.status(400).json({ message: "User already exists" });
   }
   const user = new User(req.body);
 
@@ -18,11 +19,11 @@ module.exports.registerUser = async (req, res, next) => {
       const newUser = await user.save();
       jwt.sign(
         { id: newUser.id },
-        "secret",
+        process.env.JWT_SECRET,
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-
+          newUser.password = "";
           res.json({
             token: "Bearer " + token,
             newUser,
@@ -34,6 +35,7 @@ module.exports.registerUser = async (req, res, next) => {
 };
 module.exports.logInUser = (req, res) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
+    user.password = "";
     if (err || !user) {
       return res.status(400).json({
         info,
@@ -43,7 +45,9 @@ module.exports.logInUser = (req, res) => {
     req.login(user, { session: false }, (err) => {
       if (err) throw err;
     });
-    const token = jwt.sign({ user }, "secret", { expiresIn: 3600 });
+    const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+      expiresIn: 3600,
+    });
     return res.json({ user, token: `Bearer ${token}` });
   })(req, res);
 };

@@ -3,14 +3,21 @@ const router = express.Router();
 const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
 const { isPostAuthor, validatePost } = require("../../middleware");
-const { createPost, editPost, deletePost } = require("../../controllers/posts");
+const {
+  createPost,
+  editPost,
+  deletePost,
+  getPosts,
+} = require("../../controllers/posts");
 
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  validatePost,
-  catchAsync(createPost)
-);
+router
+  .route("/")
+  .get(passport.authenticate("jwt", { session: false }), catchAsync(getPosts))
+  .post(
+    passport.authenticate("jwt", { session: false }),
+    validatePost,
+    catchAsync(createPost)
+  );
 
 router
   .route("/:id")

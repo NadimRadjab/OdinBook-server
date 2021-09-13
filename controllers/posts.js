@@ -1,6 +1,15 @@
 const Post = require("../models/posts");
 const User = require("../models/users");
 
+module.exports.getPosts = async (req, res) => {
+  const id = req.user._id;
+  const user = await User.findById(id).select("posts friendList");
+  const ids = [];
+  ids.push(id);
+  ids.push(...user.friendList);
+  const userPost = await Post.find({ author: ids }).populate("comments");
+  res.json(userPost);
+};
 module.exports.createPost = async (req, res, next) => {
   const { text } = req.body;
   const post = new Post({ text });

@@ -1,5 +1,12 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+
 const passport = require("./passport");
 const postRoutes = require("./routes/api/posts");
 const commentRoutes = require("./routes/api/comments");
@@ -18,14 +25,16 @@ mongoose
   .catch((e) => console.log(e));
 
 const app = express();
-
+app.use(cors());
+app.use(helmet());
+app.use(mongoSanitize());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/friends", friendsRoutes);
-app.use("/", usersRoutes);
-app.use("/posts", postRoutes, commentRoutes);
-app.use("/user", authRoutes);
+app.use("/api/friends", friendsRoutes);
+app.use("/api/posts", postRoutes, commentRoutes);
+app.use("/api", usersRoutes);
+app.use("/api/user", authRoutes);
 
 const port = process.env.PORT || 5000;
 
