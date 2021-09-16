@@ -4,10 +4,17 @@ const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
 const { isCommentAuthor, validateComment } = require("../../middleware");
 const {
+  getComments,
   createComment,
   editComment,
   deleteComment,
 } = require("../../controllers/comments");
+
+router.get(
+  "/comments",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(getComments)
+);
 
 router.post(
   "/:id/comments",

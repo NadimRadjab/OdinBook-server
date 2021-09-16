@@ -2,6 +2,22 @@ const Post = require("../models/posts");
 const User = require("../models/users");
 const Comment = require("../models/comments");
 
+module.exports.getComments = async (req, res) => {
+  const id = req.user._id;
+  const user = await User.findById(id).select("posts friendList");
+  const ids = [];
+  ids.push(id);
+  ids.push(...user.friendList);
+  const userPost = await Post.find({ author: ids });
+  if (!userPost) res.json({ msg: "Post does not exist!" });
+  const comments = await Comment.find({ post: userPost }).populate({
+    path: "author",
+    select: "firstName lastName",
+  });
+  console.log(comments);
+  res.json(comments);
+};
+
 module.exports.createComment = async (req, res) => {
   const { text } = req.body;
   const { id } = req.params;
@@ -9,6 +25,7 @@ module.exports.createComment = async (req, res) => {
   if (!post) res.json({ msg: "Post does not exist!" });
   const user = await User.findById(req.user._id);
   const comment = new Comment({ text });
+  comment.post = post;
   comment.author = user._id;
   const newComment = await comment.save();
   post.comments.push(newComment);

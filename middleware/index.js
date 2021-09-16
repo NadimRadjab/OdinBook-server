@@ -8,7 +8,7 @@ module.exports.isPostAuthor = async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findById(id);
     if (!post.author.equals(req.user._id) && !req.user.isAdmin) {
-      res.status(403).json({ success: false });
+      return res.status(403).json({ success: false });
     }
     next();
   } catch (e) {
@@ -21,7 +21,7 @@ module.exports.isCommentAuthor = async (req, res, next) => {
 
     const comment = await Comment.findById(commentId);
     if (!comment.author.equals(req.user._id) && !req.user.isAdmin) {
-      res.status(403).json({ success: false });
+      return res.status(403).json({ success: false });
     }
     next();
   } catch (e) {

@@ -1,16 +1,11 @@
 const User = require("../models/users");
 
-// module.exports.getHomePosts = async (req, res) => {
-//   const user = await User.findById(req.user.id)
-//     .select("-password -email -gender -isAdmin -date")
-//     .populate({ path: "posts", populate: { path: "comments" } })
-//     .populate({
-//       path: "friendList",
-//       select: "posts",
-//       populate: { path: "posts", populate: { path: "comments" } },
-//     });
-//   res.json(user);
-// };
+module.exports.getHomePosts = async (req, res) => {
+  const user = await User.findById(req.user.id).select(
+    "-password -email -gender -isAdmin -date"
+  );
+  res.json(user);
+};
 
 module.exports.getUserProfile = async (req, res) => {
   const { userId } = req.params;
