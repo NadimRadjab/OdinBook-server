@@ -28,7 +28,7 @@ const CommentSchema = new Schema({
 
 CommentSchema.post("findOneAndDelete", async function (doc) {
   if (doc) {
-    await User.findByIdAndUpdate(doc.author.toString(), {
+    await User.findByIdAndUpdate(doc.author, {
       $pull: {
         comments: doc._id,
       },
@@ -37,7 +37,7 @@ CommentSchema.post("findOneAndDelete", async function (doc) {
 });
 CommentSchema.post("findOneAndUpdate", async function (doc) {
   if (doc) {
-    await User.findByIdAndUpdate(doc.author.toString(), {
+    await User.findByIdAndUpdate(doc.author, {
       $elemMatch: {
         id: { text: doc.text },
       },

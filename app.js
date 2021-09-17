@@ -13,6 +13,7 @@ const commentRoutes = require("./routes/api/comments");
 const authRoutes = require("./routes/api/auth");
 const usersRoutes = require("./routes/api/users");
 const friendsRoutes = require("./routes/api/friends");
+const likeRoutes = require("./routes/api/likes");
 
 const db = "mongodb://localhost:27017/odinbook";
 
@@ -32,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/api/friends", friendsRoutes);
-app.use("/api/posts", postRoutes, commentRoutes);
+app.use("/api/posts", postRoutes, commentRoutes, likeRoutes);
 app.use("/api", usersRoutes);
 app.use("/api/user", authRoutes);
 

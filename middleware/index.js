@@ -2,6 +2,7 @@ const Post = require("../models/posts");
 const Comment = require("../models/comments");
 const User = require("../models/users");
 const { userSchema, postSchema, commentSchema } = require("../schemas");
+const Like = require("../models/likes");
 
 module.exports.isPostAuthor = async (req, res, next) => {
   try {
@@ -40,6 +41,29 @@ module.exports.isFriend = async (req, res, next) => {
     } else {
       next();
     }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+module.exports.isLiked = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(400).json({ msg: "Post not found" });
+    const likes = await Like.find({ author: req.user._id });
+
+    for (let like of likes) {
+      if (post.likes.includes(like._id)) {
+        await Post.findByIdAndUpdate(req.params.id, {
+          $pull: {
+            likes: like._id,
+          },
+        });
+        await Like.findByIdAndDelete(like._id);
+        return res.json(like._id);
+      }
+    }
+    next();
   } catch (e) {
     console.log(e);
   }

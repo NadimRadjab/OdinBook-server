@@ -14,7 +14,6 @@ module.exports.getComments = async (req, res) => {
     path: "author",
     select: "firstName lastName",
   });
-  console.log(comments);
   res.json(comments);
 };
 
@@ -25,11 +24,12 @@ module.exports.createComment = async (req, res) => {
   if (!post) res.json({ msg: "Post does not exist!" });
   const user = await User.findById(req.user._id);
   const comment = new Comment({ text });
-  comment.post = post;
+  comment.post = post._id;
   comment.author = user._id;
   const newComment = await comment.save();
   post.comments.push(newComment);
   user.comments.push(newComment);
+  await newComment.populate({ path: "author", select: "firstName lastName" });
   await user.save();
   await post.save();
   res.json(newComment);
