@@ -4,12 +4,21 @@ const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
 
 const { isFriend } = require("../../middleware");
-const { getUserProfile, getHomePosts } = require("../../controllers/users");
+const {
+  getUserProfile,
+  getMainUser,
+  searchUsersProfile,
+} = require("../../controllers/users");
 
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  catchAsync(getHomePosts)
+  catchAsync(getMainUser)
+);
+router.get(
+  "/s",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(searchUsersProfile)
 );
 
 router.get(

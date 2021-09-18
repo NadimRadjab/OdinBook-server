@@ -16,6 +16,7 @@ module.exports.registerUser = async (req, res, next) => {
     bcrypt.hash(user.password, salt, async (err, hash) => {
       if (err) return next(err);
       user.password = hash;
+      user.fullName = `${req.body.firstName} ${req.body.lastName}`;
       const newUser = await user.save();
       jwt.sign(
         { id: newUser.id },

@@ -35,7 +35,7 @@ module.exports.isFriend = async (req, res, next) => {
 
     if (!req.user.friendList.includes(userId)) {
       const user = await User.findById(userId).select(
-        "-password -friendList -posts -comments -isAdmin -email"
+        "-password -friendList -posts -comments -isAdmin -email -date"
       );
       res.json(user);
     } else {

@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const morgan = require("morgan");
 
 const passport = require("./passport");
 const postRoutes = require("./routes/api/posts");
@@ -31,6 +32,7 @@ app.use(helmet());
 app.use(mongoSanitize());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(morgan("tiny"));
 
 app.use("/api/friends", friendsRoutes);
 app.use("/api/posts", postRoutes, commentRoutes, likeRoutes);

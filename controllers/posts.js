@@ -26,7 +26,10 @@ module.exports.createPost = async (req, res, next) => {
   post.author = user._id;
   user.posts.push(post);
   const newPost = await post.save();
-  await newPost.populate({ path: "author", select: "firstName lastName" });
+  await newPost.populate({
+    path: "author",
+    select: "firstName lastName fullName",
+  });
   await user.save();
   res.json(newPost);
 };
