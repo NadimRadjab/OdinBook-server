@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+  url: String,
+  fileName: String,
+});
+// https://res.cloudinary.com/djdglvada/image/upload/v1632064698/OdinBook/f4fn0iwhejylnoaxkxax.png
+ImageSchema.virtual("profile").get(function () {
+  return this.url.replace("/upload", "/upload/w_400");
+});
 const UserSchema = new Schema({
   firstName: {
     type: String,
@@ -30,7 +38,8 @@ const UserSchema = new Schema({
     required: true,
   },
   image: {
-    type: String,
+    url: String,
+    fileName: String,
   },
   posts: [
     {

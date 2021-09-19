@@ -5,6 +5,7 @@ module.exports.userSchema = Joi.object({
   lastName: Joi.string().min(1).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(4).required(),
+  image: Joi.object(),
   gender: Joi.string().required(),
   friendList: Joi.array(),
   posts: Joi.array(),

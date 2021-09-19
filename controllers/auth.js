@@ -17,14 +17,18 @@ module.exports.registerUser = async (req, res, next) => {
       if (err) return next(err);
       user.password = hash;
       user.fullName = `${req.body.firstName} ${req.body.lastName}`;
+      user.image.url =
+        "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png";
+      user.image.fileName = "Portrait_Placeholder";
       const newUser = await user.save();
       jwt.sign(
         { id: newUser.id },
         process.env.JWT_SECRET,
-        { expiresIn: 3600 },
+        { expiresIn: 3600 * 24 * 7 },
         (err, token) => {
           if (err) throw err;
           newUser.password = "";
+
           res.json({
             token: "Bearer " + token,
             newUser,
@@ -47,7 +51,7 @@ module.exports.logInUser = (req, res) => {
       if (err) throw err;
     });
     const token = jwt.sign({ user }, process.env.JWT_SECRET, {
-      expiresIn: 3600,
+      expiresIn: 3600 * 24 * 7,
     });
     return res.json({ user, token: `Bearer ${token}` });
   })(req, res);

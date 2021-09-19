@@ -35,9 +35,10 @@ module.exports.isFriend = async (req, res, next) => {
 
     if (!req.user.friendList.includes(userId)) {
       const user = await User.findById(userId).select(
-        "-password -friendList -posts -comments -isAdmin -email -date"
+        "-password  -posts -comments -isAdmin -email -date"
       );
-      res.json(user);
+      const posts = [];
+      res.json({ user, posts });
     } else {
       next();
     }
@@ -45,6 +46,14 @@ module.exports.isFriend = async (req, res, next) => {
     console.log(e);
   }
 };
+
+// module.exports.isViewingProfile = async (req, res, next) => {
+//   try {
+//     const { profileId } = req.params;
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };
 
 module.exports.isLiked = async (req, res, next) => {
   try {

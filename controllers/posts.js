@@ -3,14 +3,14 @@ const User = require("../models/users");
 
 module.exports.getPosts = async (req, res) => {
   const id = req.user._id;
-  const user = await User.findById(id).select("posts friendList");
+  const user = await User.findById(id).select("friendList");
   const ids = [];
   ids.push(id);
   ids.push(...user.friendList);
   const userPost = await Post.find({ author: ids })
     .populate({
       path: "author",
-      select: "firstName lastName",
+      select: "firstName lastName fullName",
     })
     .populate({
       path: "likes",
