@@ -10,19 +10,17 @@ module.exports.registerUser = async (req, res, next) => {
     res.status(400).json({ message: "User already exists" });
   }
   const user = new User(req.body);
-
   bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
     bcrypt.hash(user.password, salt, async (err, hash) => {
       if (err) return next(err);
       user.password = hash;
       user.fullName = `${req.body.firstName} ${req.body.lastName}`;
-      user.image.url =
-        "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png";
-      user.image.fileName = "Portrait_Placeholder";
+
+      user.default;
       const newUser = await user.save();
       jwt.sign(
-        { id: newUser.id },
+        { id: user.id },
         process.env.JWT_SECRET,
         { expiresIn: 3600 * 24 * 7 },
         (err, token) => {
@@ -31,7 +29,9 @@ module.exports.registerUser = async (req, res, next) => {
 
           res.json({
             token: "Bearer " + token,
-            newUser,
+            user: {
+              ...newUser._doc,
+            },
           });
         }
       );

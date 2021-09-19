@@ -47,14 +47,6 @@ module.exports.isFriend = async (req, res, next) => {
   }
 };
 
-// module.exports.isViewingProfile = async (req, res, next) => {
-//   try {
-//     const { profileId } = req.params;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
 module.exports.isLiked = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);

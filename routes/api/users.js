@@ -5,7 +5,6 @@ const catchAsync = require("../../utils/catchAsync");
 const multer = require("multer");
 const { storage } = require("../../cloudinary");
 const upload = multer({ storage });
-
 const { isFriend } = require("../../middleware");
 const {
   getUserProfile,

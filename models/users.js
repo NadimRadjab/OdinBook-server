@@ -3,12 +3,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ImageSchema = new Schema({
-  url: String,
-  fileName: String,
-});
-// https://res.cloudinary.com/djdglvada/image/upload/v1632064698/OdinBook/f4fn0iwhejylnoaxkxax.png
-ImageSchema.virtual("profile").get(function () {
-  return this.url.replace("/upload", "/upload/w_400");
+  url: {
+    type: String,
+    required: true,
+    default:
+      "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png",
+  },
+  fileName: {
+    type: String,
+    required: true,
+    default: "Portrait_Placeholder",
+  },
 });
 const UserSchema = new Schema({
   firstName: {
@@ -37,10 +42,8 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  image: {
-    url: String,
-    fileName: String,
-  },
+  image: [ImageSchema],
+
   posts: [
     {
       type: Schema.Types.ObjectId,
@@ -67,6 +70,11 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+UserSchema.virtual("default").get(function () {
+  return this.image.push({
+    url: "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png",
+  });
 });
 
 module.exports = mongoose.model("User", UserSchema);

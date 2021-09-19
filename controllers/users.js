@@ -6,15 +6,17 @@ module.exports.getMainUser = async (req, res) => {
   const user = await User.findById(req.user.id)
     .select("-password -email -gender -isAdmin -date")
     .populate({ path: "friendList", select: "fullName" });
+
   res.json(user);
 };
 
 module.exports.updateUserImage = async (req, res) => {
+  const newPath = req.file.path.replace("/upload", "/upload/w_300");
   const user = await User.findByIdAndUpdate(req.user._id, {
-    $set: { image: { url: req.file.path, fileName: req.file.filename } },
-  }).select("image");
-  console.log(req.file);
-  const fileName = user.image.fileName;
+    $set: { image: { url: newPath, fileName: req.file.filename } },
+  });
+
+  const fileName = user.image[0].fileName;
   await cloudinary.uploader.destroy(fileName);
   await user.save();
   res.json({ url: req.file.path, fileName: req.file.fileName });
