@@ -30,7 +30,7 @@ passport.use(
             });
           }
         });
-      }).populate({ path: "friendList", select: "fullName" });
+      }).populate({ path: "friendList", select: "fullName image" });
     }
   )
 );

@@ -15,6 +15,13 @@ const ImageSchema = new Schema({
     default: "Portrait_Placeholder",
   },
 });
+
+const InvitationsSchema = new Schema({
+  _id: String,
+  fullName: String,
+  image: [],
+});
+
 const UserSchema = new Schema({
   firstName: {
     type: String,
@@ -60,6 +67,7 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  friendInvites: [InvitationsSchema],
   friendList: [
     {
       type: Schema.Types.ObjectId,

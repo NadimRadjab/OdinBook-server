@@ -5,7 +5,7 @@ const { cloudinary } = require("../cloudinary");
 module.exports.getMainUser = async (req, res) => {
   const user = await User.findById(req.user.id)
     .select("-password -email -gender -isAdmin -date")
-    .populate({ path: "friendList", select: "fullName" });
+    .populate({ path: "friendList", select: "fullName image" });
 
   res.json(user);
 };
@@ -38,7 +38,7 @@ module.exports.searchUsersProfile = async (req, res) => {
   let search = new RegExp(name, "i");
 
   const user = await User.find({ fullName: search }).select(
-    "firstName lastName fullName"
+    "firstName lastName fullName image"
   );
 
   if (!user) res.status(400).json({ message: "User does not exist!" });

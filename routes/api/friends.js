@@ -7,6 +7,8 @@ const {
   getFriends,
   addFriend,
   deleteFriend,
+  sendFriendInvetation,
+  removeFriendInvetation,
 } = require("../../controllers/friends");
 
 router.get(
@@ -22,5 +24,21 @@ router
     passport.authenticate("jwt", { session: false }),
     catchAsync(deleteFriend)
   );
+router
+  .route("/:friendId/invite")
+  .post(
+    passport.authenticate("jwt", { session: false }),
+    catchAsync(sendFriendInvetation)
+  )
+  .delete(
+    passport.authenticate("jwt", { session: false }),
+    catchAsync(removeFriendInvetation)
+  );
 
 module.exports = router;
+
+// router.post(
+//   "/:friendId/remove",
+//   passport.authenticate("jwt", { session: false }),
+//   catchAsync(removeFriendInvetation)
+// );

@@ -10,7 +10,7 @@ module.exports.getPosts = async (req, res) => {
   const userPost = await Post.find({ author: ids })
     .populate({
       path: "author",
-      select: "firstName lastName fullName",
+      select: "firstName lastName fullName image",
     })
     .populate({
       path: "likes",
@@ -28,7 +28,7 @@ module.exports.createPost = async (req, res, next) => {
   const newPost = await post.save();
   await newPost.populate({
     path: "author",
-    select: "firstName lastName fullName",
+    select: "firstName lastName fullName image",
   });
   await user.save();
   res.json(newPost);
