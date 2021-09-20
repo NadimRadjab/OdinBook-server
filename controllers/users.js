@@ -25,11 +25,14 @@ module.exports.updateUserImage = async (req, res) => {
 module.exports.getUserProfile = async (req, res) => {
   const { userId } = req.params;
   const user = await User.findById(userId)
-    .populate({
-      path: "friendList",
-      select: "-isAdmin -password -comments -posts -email",
-    })
-    .select("-password -isAdmin");
+    .select("-password -isAdmin -friendInvites")
+    .populate([
+      {
+        path: "friendList",
+        select: "fullName image",
+      },
+    ]);
+
   if (!user) res.status(400).json({ message: "User does not exist!" });
   res.json({ user });
 };

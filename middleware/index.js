@@ -35,7 +35,7 @@ module.exports.isFriend = async (req, res, next) => {
 
     if (!req.user.friendList.includes(userId)) {
       const user = await User.findById(userId).select(
-        "-password  -posts -comments -isAdmin -email -date"
+        "-password  -posts -comments -isAdmin -email -date -friendInvites"
       );
       const posts = [];
       res.json({ user, posts });
@@ -47,6 +47,21 @@ module.exports.isFriend = async (req, res, next) => {
   }
 };
 
+module.exports.isInFriendInvites = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.friendId).select(
+      "friendInvites"
+    );
+
+    const friends = user.friendInvites.map((user) => user._id);
+    if (friends.includes(req.user._id.toString())) {
+      return res.status(400).json({ message: "Invite already sent" });
+    }
+    next();
+  } catch (e) {
+    console.log(e);
+  }
+};
 module.exports.isLiked = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id);

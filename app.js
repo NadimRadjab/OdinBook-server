@@ -36,9 +36,8 @@ app.use(morgan("tiny"));
 
 app.use("/api/friends", friendsRoutes);
 app.use("/api/posts", postRoutes, commentRoutes, likeRoutes);
-
-app.use("/api", usersRoutes);
 app.use("/api/user", authRoutes);
+app.use("/api", usersRoutes);
 
 const port = process.env.PORT || 5000;
 

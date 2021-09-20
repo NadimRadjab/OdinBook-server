@@ -3,6 +3,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
+module.exports.getUser = async (req, res) => {
+  const user = await User.findById(req.user.id).select("fullName");
+
+  res.json(user);
+};
+
 module.exports.registerUser = async (req, res, next) => {
   let isUser = await User.findOne({ email: req.body.email });
 
@@ -20,7 +26,7 @@ module.exports.registerUser = async (req, res, next) => {
       user.default;
       const newUser = await user.save();
       jwt.sign(
-        { id: user.id },
+        { user },
         process.env.JWT_SECRET,
         { expiresIn: 3600 * 24 * 7 },
         (err, token) => {
@@ -28,10 +34,10 @@ module.exports.registerUser = async (req, res, next) => {
           newUser.password = "";
 
           res.json({
-            token: "Bearer " + token,
             user: {
               ...newUser._doc,
             },
+            token: "Bearer " + token,
           });
         }
       );

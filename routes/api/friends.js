@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
+const { isInFriendInvites } = require("../../middleware/");
 
 const {
   getFriends,
@@ -28,6 +29,7 @@ router
   .route("/:friendId/invite")
   .post(
     passport.authenticate("jwt", { session: false }),
+    isInFriendInvites,
     catchAsync(sendFriendInvetation)
   )
   .delete(
@@ -36,9 +38,3 @@ router
   );
 
 module.exports = router;
-
-// router.post(
-//   "/:friendId/remove",
-//   passport.authenticate("jwt", { session: false }),
-//   catchAsync(removeFriendInvetation)
-// );

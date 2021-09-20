@@ -16,10 +16,11 @@ module.exports.getFriends = async (req, res) => {
 module.exports.sendFriendInvetation = async (req, res) => {
   const { friendId } = req.params;
   const user = await User.findById(req.user._id);
-  const friend = await User.findById(friendId).select("fullName image");
+  const friend = await User.findById(friendId);
   if (!friend) res.status(400).json({ message: "User does not exist!" });
-  user.friendInvites.push(friend);
-  await user.save();
+  friend.friendInvites.push(user);
+
+  await friend.save();
   res.json({ success: true });
 };
 module.exports.removeFriendInvetation = async (req, res) => {
