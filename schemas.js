@@ -13,12 +13,14 @@ module.exports.userSchema = Joi.object({
 });
 module.exports.postSchema = Joi.object({
   image: Joi.array(),
-  text: Joi.string().when("image", { not: Joi.exist(), then: Joi.required() }),
+  text: Joi.string().required(),
   author: Joi.object(),
   comments: Joi.array(),
+});
+module.exports.postSchemaImage = Joi.object({
+  image: Joi.array(),
 });
 module.exports.commentSchema = Joi.object({
   text: Joi.string().required(),
   author: Joi.object(),
 });
-// .when("text", { not: Joi.exist(), then: Joi.required() }),

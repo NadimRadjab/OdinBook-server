@@ -36,7 +36,7 @@ module.exports.createPost = async (req, res, next) => {
 };
 module.exports.createPostWithImage = async (req, res, next) => {
   console.log(req.file);
-
+  if (!req.file) res.status(400).json({ message: "Image is required" });
   const { path, filename } = req.file;
   const newPath = path.replace("/upload", "/upload/w_500");
   const post = new Post();
@@ -70,6 +70,7 @@ module.exports.deletePost = async (req, res) => {
   const post = await Post.findByIdAndDelete(id);
   if (!post.image.length) res.json({ succsess: true });
   else {
+    const fileName = post.image[0].fileName;
     res.json({ succsess: true });
     await cloudinary.uploader.destroy(fileName);
   }

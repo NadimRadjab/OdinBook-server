@@ -1,7 +1,12 @@
 const Post = require("../models/posts");
 const Comment = require("../models/comments");
 const User = require("../models/users");
-const { userSchema, postSchema, commentSchema } = require("../schemas");
+const {
+  userSchema,
+  postSchema,
+  commentSchema,
+  postSchemaImage,
+} = require("../schemas");
 const Like = require("../models/likes");
 
 module.exports.isPostAuthor = async (req, res, next) => {
@@ -108,6 +113,15 @@ module.exports.validateUser = (req, res, next) => {
 };
 module.exports.validatePost = (req, res, next) => {
   const { error } = postSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    res.status(400).json({ message: msg });
+  } else {
+    next();
+  }
+};
+module.exports.validatePostImage = (req, res, next) => {
+  const { error } = postSchemaImage.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     res.status(400).json({ message: msg });
