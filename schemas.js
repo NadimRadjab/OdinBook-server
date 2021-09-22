@@ -12,7 +12,8 @@ module.exports.userSchema = Joi.object({
   comments: Joi.array(),
 });
 module.exports.postSchema = Joi.object({
-  text: Joi.string().required(),
+  image: Joi.array(),
+  text: Joi.string().when("image", { not: Joi.exist(), then: Joi.required() }),
   author: Joi.object(),
   comments: Joi.array(),
 });
@@ -20,3 +21,4 @@ module.exports.commentSchema = Joi.object({
   text: Joi.string().required(),
   author: Joi.object(),
 });
+// .when("text", { not: Joi.exist(), then: Joi.required() }),

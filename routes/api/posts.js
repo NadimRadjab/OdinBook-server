@@ -3,11 +3,15 @@ const router = express.Router();
 const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
 const { isPostAuthor, validatePost } = require("../../middleware");
+const multer = require("multer");
+const { storage } = require("../../cloudinary");
+const upload = multer({ storage });
 const {
   createPost,
   editPost,
   deletePost,
   getPosts,
+  createPostWithImage,
 } = require("../../controllers/posts");
 
 router
@@ -18,6 +22,13 @@ router
     validatePost,
     catchAsync(createPost)
   );
+router.post(
+  "/image",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  validatePost,
+  catchAsync(createPostWithImage)
+);
 
 router
   .route("/:id")

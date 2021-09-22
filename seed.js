@@ -47,11 +47,4 @@ const makeFakePost = async () => {
 
 for (let i = 0; i < 10; i++) {
   makeFakeUsers();
-  makeFakePost();
 }
-
-// async function test() {
-//   const post = await Post.find({});
-//   console.log(post);
-// }
-// test();

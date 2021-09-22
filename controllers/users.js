@@ -25,7 +25,7 @@ module.exports.updateUserImage = async (req, res) => {
 module.exports.getUserProfile = async (req, res) => {
   const { userId } = req.params;
   const user = await User.findById(userId)
-    .select("-password -isAdmin -friendInvites")
+    .select("-password -isAdmin ")
     .populate([
       {
         path: "friendList",

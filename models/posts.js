@@ -4,15 +4,23 @@ const Comment = require("./comments");
 const User = require("./users");
 const Like = require("./likes");
 
+const ImageSchema = new Schema({
+  url: {
+    type: String,
+  },
+  fileName: {
+    type: String,
+  },
+});
 const PostSchema = new Schema({
   text: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
     default: Date.now,
   },
+  image: [ImageSchema],
   likes: [
     {
       type: Schema.Types.ObjectId,
