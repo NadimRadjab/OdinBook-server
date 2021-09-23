@@ -15,6 +15,7 @@ const authRoutes = require("./routes/api/auth");
 const usersRoutes = require("./routes/api/users");
 const friendsRoutes = require("./routes/api/friends");
 const likeRoutes = require("./routes/api/likes");
+const chatRoutes = require("./routes/api/chat");
 
 const db = "mongodb://localhost:27017/odinbook";
 
@@ -37,6 +38,7 @@ app.use(morgan("tiny"));
 app.use("/api/friends", friendsRoutes);
 app.use("/api/posts", postRoutes, commentRoutes, likeRoutes);
 app.use("/api/user", authRoutes);
+app.use("/api/chat", chatRoutes);
 app.use("/api", usersRoutes);
 
 const port = process.env.PORT || 5000;

@@ -1,6 +1,8 @@
 const Post = require("../models/posts");
 const Comment = require("../models/comments");
 const User = require("../models/users");
+const Chat = require("../models/chat");
+const Message = require("../models/message");
 const {
   userSchema,
   postSchema,
@@ -97,6 +99,25 @@ module.exports.isLiked = async (req, res, next) => {
       }
     }
     next();
+  } catch (e) {
+    console.log(e);
+  }
+};
+module.exports.isChat = async (req, res, next) => {
+  try {
+    const ids = [req.user._id, req.params.id];
+    const chat = await Chat.find({ participants: ids });
+    if (chat[0]) {
+      const message = new Message(req.body);
+      message.chat = chat._id;
+      message.sender = req.user._id;
+      chat[0].messages.push(message._id);
+      await message.save();
+      await chat[0].save();
+      res.json(chat);
+    } else {
+      next();
+    }
   } catch (e) {
     console.log(e);
   }
