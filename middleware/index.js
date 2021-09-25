@@ -105,21 +105,22 @@ module.exports.isLiked = async (req, res, next) => {
 };
 module.exports.isChat = async (req, res, next) => {
   try {
-    const ids = [req.user._id, req.params.id];
-    const chat = await Chat.find({ participants: ids });
-    if (chat[0]) {
-      const message = new Message(req.body);
-      message.chat = chat._id;
-      message.sender = req.user._id;
-      chat[0].messages.push(message._id);
-      await message.save();
-      await chat[0].save();
-      res.json(chat);
-    } else {
-      next();
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+    const chat = await Chat.find({
+      participants: { $all: [req.user._id, user._id] },
+    });
+    if (!chat.length) {
+      const newChat = new Chat();
+      newChat.participants.push(req.user._id, userId);
+      await newChat.save();
+
+      return res.json([newChat]);
     }
-  } catch (e) {
-    console.log(e);
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };
 

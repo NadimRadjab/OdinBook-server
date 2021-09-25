@@ -5,24 +5,52 @@ const catchAsync = require("../../utils/catchAsync");
 const { isChat } = require("../../middleware");
 const Message = require("../../models/message");
 const Chat = require("../../models/chat");
-// const User = require("../../models/user");
+const User = require("../../models/users");
 
+//Makes a new message
 router.post(
-  "/:id",
+  "/messages",
   passport.authenticate("jwt", { session: false }),
-  isChat,
   async (req, res) => {
-    // const sender = User.findById(req.user._id);
-    // const reciver = User.findById(req.params.id);
-    const message = new Message(req.body);
-    message.sender = req.user._id;
-    const chat = new Chat();
-    chat.messages.push(message);
-    chat.participants.push(req.user._id, req.params.id);
-    message.chat = chat;
-    await message.save();
-    await chat.save();
-    res.json(chat);
+    const { chatId, userId, message } = req.body;
+    const reciver = await User.findById(userId);
+    const newMessage = new Message({ message });
+    newMessage.sender = req.user._id;
+    newMessage.chatId = chatId;
+    reciver.unreadMessages.push(newMessage._id);
+    await newMessage.save();
+    await reciver.save();
+    res.status(200).json(newMessage);
   }
 );
+//Get chat
+router.get(
+  "/:userId",
+  passport.authenticate("jwt", { session: false }),
+  isChat,
+  catchAsync(async (req, res) => {
+    const { userId } = req.params;
+
+    const chat = await Chat.find({
+      participants: { $all: [req.user._id, userId] },
+    }).populate({ path: "participants", select: "fullName image" });
+
+    res.status(200).json(chat);
+  })
+);
+
+//Get messages for the chat
+router.get(
+  "/:chatId/messages",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { chatId } = req.params;
+    const chat = await Chat.findById(chatId);
+    const messages = await Message.find({
+      chatId: { $eq: chat._id },
+    });
+    res.status(200).json(messages);
+  }
+);
+
 module.exports = router;
