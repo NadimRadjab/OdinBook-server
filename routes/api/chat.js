@@ -45,10 +45,22 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { chatId } = req.params;
-    const chat = await Chat.findById(chatId);
     const messages = await Message.find({
-      chatId: { $eq: chat._id },
+      chatId: { $eq: chatId },
     });
+    res.status(200).json(messages);
+  }
+);
+//Delete unread messages for the current user
+router.put(
+  "/:chatId/messages",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { messages } = req.body;
+    const user = await User.findByIdAndUpdate(req.user._id, {
+      $pull: { unreadMessages: messages },
+    });
+
     res.status(200).json(messages);
   }
 );

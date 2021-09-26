@@ -5,7 +5,10 @@ const { cloudinary } = require("../cloudinary");
 module.exports.getMainUser = async (req, res) => {
   const user = await User.findById(req.user.id)
     .select("-password -email -gender -isAdmin -date")
-    .populate({ path: "friendList", select: "fullName image chats" });
+    .populate([
+      { path: "friendList", select: "fullName image chats" },
+      { path: "unreadMessages", select: "sender" },
+    ]);
 
   res.json(user);
 };

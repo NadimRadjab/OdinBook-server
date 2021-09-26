@@ -115,7 +115,12 @@ module.exports.isChat = async (req, res, next) => {
       newChat.participants.push(req.user._id, userId);
       await newChat.save();
 
-      return res.json([newChat]);
+      const findChat = await Chat.findById(newChat._id).populate({
+        path: "participants",
+        select: "fullName image",
+      });
+
+      return res.json([findChat]);
     }
     next();
   } catch (err) {

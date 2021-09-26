@@ -46,3 +46,6 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`On ${port}`);
 });
+
+app.route("/google.com");
+app.route("/google.com/search");

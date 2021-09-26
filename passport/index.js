@@ -30,7 +30,10 @@ passport.use(
             });
           }
         });
-      }).populate({ path: "friendList", select: "fullName image" });
+      }).populate([
+        { path: "friendList", select: "fullName image" },
+        { path: "unreadMessages", select: "sender" },
+      ]);
     }
   )
 );

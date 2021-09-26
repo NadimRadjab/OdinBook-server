@@ -74,8 +74,7 @@ const UserSchema = new Schema({
       ref: "User",
     },
   ],
-  chats: [{ type: String }],
-  unreadMessages: [{ type: String }],
+  unreadMessages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   date: {
     type: Date,
     default: Date.now,
