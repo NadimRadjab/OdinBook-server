@@ -57,7 +57,7 @@ module.exports.getUserPosts = async (req, res) => {
   const posts = await Post.find({ author: userId })
     .populate({
       path: "author",
-      select: "firstName lastName fullName",
+      select: "firstName lastName fullName image",
     })
     .populate({
       path: "likes",

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const catchAsync = require("../../utils/catchAsync");
-const { isInFriendInvites, isInFriendList } = require("../../middleware/");
+const { isInFriendInvites, isInFriendList } = require("../../middleware");
 
 const {
   addFriend,

@@ -41,9 +41,9 @@ module.exports.isFriend = async (req, res, next) => {
     const { userId } = req.params;
 
     if (!req.user.friendList.includes(userId)) {
-      const user = await User.findById(userId).select(
-        "friendInvites fullName gender image friendList"
-      );
+      const user = await User.findById(userId)
+        .select("friendInvites fullName gender image friendList")
+        .populate({ path: "friendList", select: "fullName image" });
       const posts = [];
       res.json({ user, posts });
     } else {
