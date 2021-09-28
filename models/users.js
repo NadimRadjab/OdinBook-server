@@ -7,7 +7,7 @@ const ImageSchema = new Schema({
     type: String,
     required: true,
     default:
-      "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png",
+      "https://www.baytekent.com/wp-content/uploads/2016/12/facebook-default-no-profile-pic1.jpg",
   },
   fileName: {
     type: String,
@@ -65,7 +65,7 @@ const UserSchema = new Schema({
   ],
   isAdmin: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   friendInvites: [InvitationsSchema],
   friendList: [
@@ -82,7 +82,7 @@ const UserSchema = new Schema({
 });
 UserSchema.virtual("default").get(function () {
   return this.image.push({
-    url: "https://180dc.org/wp-content/uploads/2017/11/profile-placeholder.png",
+    url: "https://www.baytekent.com/wp-content/uploads/2016/12/facebook-default-no-profile-pic1.jpg",
   });
 });
 

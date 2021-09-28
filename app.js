@@ -17,7 +17,7 @@ const friendsRoutes = require("./routes/api/friends");
 const likeRoutes = require("./routes/api/likes");
 const chatRoutes = require("./routes/api/chat");
 
-const db = "mongodb://localhost:27017/odinbook";
+const db = process.env.DB_URL || "mongodb://localhost:27017/dbName";
 
 mongoose
   .connect(db, {
@@ -46,6 +46,3 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`On ${port}`);
 });
-
-app.route("/google.com");
-app.route("/google.com/search");
