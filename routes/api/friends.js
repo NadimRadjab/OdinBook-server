@@ -15,9 +15,14 @@ const {
 //Accept and delete Friend
 router
   .route("/:friendId")
-  .put(passport.authenticate("jwt", { session: false }), catchAsync(addFriend))
+  .put(
+    passport.authenticate("jwt", { session: false }),
+    isInFriendList,
+    catchAsync(addFriend)
+  )
   .delete(
     passport.authenticate("jwt", { session: false }),
+
     catchAsync(deleteFriend)
   );
 //Send and cancel invites

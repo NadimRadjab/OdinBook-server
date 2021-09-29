@@ -16,9 +16,10 @@ const ImageSchema = new Schema({
   },
 });
 
-const InvitationsSchema = new Schema({
-  _id: String,
-  fullName: String,
+const invitationsSchema = new Schema({
+  fullName: {
+    type: String,
+  },
   image: [],
 });
 
@@ -65,9 +66,9 @@ const UserSchema = new Schema({
   ],
   isAdmin: {
     type: Boolean,
-    default: true,
+    default: false,
   },
-  friendInvites: [InvitationsSchema],
+  friendInvites: [invitationsSchema],
   friendList: [
     {
       type: Schema.Types.ObjectId,

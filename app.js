@@ -35,10 +35,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use("/api/friends", friendsRoutes);
 app.use("/api/posts", postRoutes, commentRoutes, likeRoutes);
 app.use("/api/user", authRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/friends", friendsRoutes);
 app.use("/api", usersRoutes);
 
 const port = process.env.PORT || 5000;

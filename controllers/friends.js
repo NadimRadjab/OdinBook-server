@@ -36,10 +36,11 @@ module.exports.addFriend = async (req, res) => {
   const user = await User.findByIdAndUpdate(req.user._id, {
     $pull: { friendInvites: { _id: friendId } },
   });
-  const friend = await User.findById(friendId);
-  if (!friend) res.status(400).json({ message: "User does not exist!" });
-  user.friendList.push(friend);
-  friend.friendList.push(user);
+
+  const friend = await User.findById(friendId).select("-password -isAdmin");
+
+  user.friendList.push(friend._id);
+  friend.friendList.push(user._id);
 
   await user.save();
   await friend.save();
