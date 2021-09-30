@@ -12,8 +12,21 @@ Visit the OdinBook socket repo [here.](https://github.com/NadimRadjab/OdinBook-s
 git clone https://github.com/NadimRadjab/OdinBook-server.git
 cd OdinBook-server
 npm install
+touch .env
 node app.js
 ```
+open .env file
+
+- JWT_SECRET=Jwt Secret
+
+- CLOUDINARY_CLOUD_NAME=Cloud name
+
+- CLOUDINARY_KEY=Cloudinary key
+
+- CLOUDINARY_SECERET=Cloudinary secret
+
+- DB_URL= DB Url
+
 
 ### Made with:
 
