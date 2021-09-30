@@ -1,10 +1,10 @@
 # OdinBook
 
-Back-end Repo for OdinBook.
+Back-end Repo for OdinBook Project.
 
-Visit the OdinBook client repo [here.]()
+Visit the OdinBook client repo [here.](https://github.com/NadimRadjab/OdinBook-Client)
 
-Visit the OdinBook socket repo [here.]()
+Visit the OdinBook socket repo [here.](https://github.com/NadimRadjab/OdinBook-socket)
 
 ## How To Run:
 
