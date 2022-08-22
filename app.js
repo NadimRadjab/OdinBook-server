@@ -7,7 +7,6 @@ const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
 const passport = require("./passport");
 const postRoutes = require("./routes/api/posts");
 const commentRoutes = require("./routes/api/comments");

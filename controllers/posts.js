@@ -35,7 +35,6 @@ module.exports.createPost = async (req, res, next) => {
   res.json(newPost);
 };
 module.exports.createPostWithImage = async (req, res, next) => {
-  console.log(req.file);
   if (!req.file) res.status(400).json({ message: "Image is required" });
   const { path, filename } = req.file;
   const newPath = path.replace("/upload", "/upload/w_500");
